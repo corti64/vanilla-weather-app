@@ -20,6 +20,10 @@ li {
   line-height: 19px;
 }
 
+li:first-letter {
+  text-transform: capitalize;
+} /** this capitalizes only the first letter in a list element **/
+
 ul {
   margin: 0;
   padding: 0;
