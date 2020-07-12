@@ -41,8 +41,21 @@ function displayTemperature(response) {
   dateElement.innerHTML = formatDate(response.data.dt * 1000);
 }
 
-let apiKey = "10a81d6318c2a72a6e26b0c6227d2fa9";
-let city = "New York";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+function search(city) {
+  //this search function is going to take care of making an AJAX call
+  let apiKey = "10a81d6318c2a72a6e26b0c6227d2fa9";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  //and it's going to take care of displaying the city
+  axios.get(apiUrl).then(displayTemperature);
+}
 
-axios.get(apiUrl).then(displayTemperature);
+function handleSubmit(event) {
+  event.preventDefault(); //prevents addEventListener, specifically the "event" default behavior, which automatically reloads the page
+  cityInputElement = document.querySelector("#city-input"); // id, #city-input", is value user types into search-form
+  search(cityInputElement.value);
+}
+
+search("New York"); //Calling this function on load, also search function is invoked when handleSubmit function is triggered
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
