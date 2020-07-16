@@ -33,6 +33,7 @@ function displayTemperature(response) {
   let windElement = document.querySelector("#wind");
   let dateElement = document.querySelector("#date");
   let iconElement = document.querySelector("#icon");
+  celsiusTemperature = response.data.main.temp; //
   temperatureElement.innerHTML = Math.round(response.data.main.temp);
   cityElement.innerHTML = response.data.name;
   descriptionElement.innerHTML = response.data.weather[0].description;
@@ -61,7 +62,33 @@ function handleSubmit(event) {
   search(cityInputElement.value);
 }
 
-search("New York"); //Calling this function on load, also search function is invoked when handleSubmit function is triggered
+function displayFahrenheitTemperature(event) {
+  event.preventDefault(); //prevent default behavior of page reload
+  let temperatureElement = document.querySelector("#temperature");
+  //remove active class from the celsius link
+  celsiusLink.classList.remove("active");
+  fahrenheitLink.classList.add("active");
+  let fahrenheiTemperature = (celsiusTemperature * 9) / 5 + 32;
+  temperatureElement.innerHTML = Math.round(fahrenheiTemperature);
+}
+
+function displayCelsiusTemperature(event) {
+  event.preventDefault();
+  celsiusLink.classList.add("active");
+  fahrenheitLink.classList.remove("active");
+  let temperatureElement = document.querySelector("#temperature");
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+}
+
+let celsiusTemperature = null; //to avoid Celcius or Fahrenheit being calculated over and over again, had to create a global variable
+
+let fahrenheitLink = document.querySelector("#fahrenheit-link");
+fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
+
+let celsiusLink = document.querySelector("#celsius-link");
+celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
+
+search("New York"); //Calling this function on load, also search function is invoked when handleSubmit function is triggered
