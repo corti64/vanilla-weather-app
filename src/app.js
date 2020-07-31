@@ -48,12 +48,36 @@ function displayTemperature(response) {
   iconElement.setAttribute("alt", response.data.weather[0].description);
 }
 
+function displayForecast(response) {
+  //console.log(response.data.list[0]); //first logging the response from the API showing forecast data
+  //function to display extended forecast is  below
+  let forecastElement = document.querySelector("#forecast"); //pulling this id from HTML, will use Vanilla JS
+  let forecast = response.data.list[0];
+  console.log(forecast);
+  forecastElement.innerHTML = `
+  <div class="col-2">
+              <h3>
+                12:00
+              </h3>
+              <img src="https://ssl.gstatic.com/onebox/weather/48/rain_s_cloudy.png" alt="">
+                <div class="weather-forecast-temperature">
+                  <strong>${Math.round(
+                    forecast.main.temp_max
+                  )}°</strong> ${Math.round(forecast.main.temp_min)}°
+                </div>
+  </div>
+  `;
+}
+
 function search(city) {
   //this search function is going to take care of making an AJAX call
   let apiKey = "10a81d6318c2a72a6e26b0c6227d2fa9";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`; //first API call to OpenWeather
   //and it's going to take care of displaying the city
   axios.get(apiUrl).then(displayTemperature);
+
+  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`; //second API call made to OpenWeather, this part of the search function is going to make an AJAX call to get the 5-day forecast
+  axios.get(apiUrl).then(displayForecast);
 }
 
 function handleSubmit(event) {
