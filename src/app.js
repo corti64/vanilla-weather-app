@@ -24,6 +24,22 @@ function formatDate(timestamp) {
   return `${day} ${hours}:${minutes}`;
 }
 
+function formatHours(timestamp) {
+  //function to format the "dt" raw timestamp returned with the Forecast API response, same as the above "formatDate" function, calculated the date, pulled and formated timestamp from Forecast-specific API response data (UTC)
+  let date = new Date(timestamp);
+  let hours = date.getHours(); // JS syntax, getHours
+  if (hours < 10) {
+    //two digits, if hours is <10, then `0${hours}`
+    hours = `0${hours}`;
+  }
+  let minutes = date.getMinutes();
+  if (minutes < 10) {
+    //two digits, if minutes is <10, then `0${minutes}`
+    minutes = `0${minutes}`;
+  }
+  return `${hours}:${minutes}`;
+}
+
 function displayTemperature(response) {
   let temperatureElement = document.querySelector("#temperature");
   let cityElement = document.querySelector("#city");
@@ -50,16 +66,18 @@ function displayTemperature(response) {
 
 function displayForecast(response) {
   //console.log(response.data.list[0]); //first logging the response from the API showing forecast data
-  //function to display extended forecast is  below
+  //function to display extended forecast is below, displays forecast data every 3 hours / on the hour, view API documentation here: https://openweathermap.org/forecast5
   let forecastElement = document.querySelector("#forecast"); //pulling this id from HTML, will use Vanilla JS
   let forecast = response.data.list[0];
-  console.log(forecast);
+  console.log(formatHours(forecast.dt));
   forecastElement.innerHTML = `
   <div class="col-2">
               <h3>
-                12:00
+                ${formatHours(forecast.dt * 1000)}
               </h3>
-              <img src="https://ssl.gstatic.com/onebox/weather/48/rain_s_cloudy.png" alt="">
+              <img src="http://openweathermap.org/img/wn/${
+                forecast.weather[0].icon
+              }@2x.png" alt="">
                 <div class="weather-forecast-temperature">
                   <strong>${Math.round(
                     forecast.main.temp_max
@@ -77,6 +95,7 @@ function search(city) {
   axios.get(apiUrl).then(displayTemperature);
 
   apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`; //second API call made to OpenWeather, this part of the search function is going to make an AJAX call to get the 5-day forecast
+  console.log(axios.get(apiUrl));
   axios.get(apiUrl).then(displayForecast);
 }
 
