@@ -77,10 +77,9 @@ function displayForecast(response) {
   `;
 
   forecast = response.data.list[1]; // need to create loop, I want the above code to work 6 times to give me 6 3-hour chunks
-  let forecastElement = document.querySelector("#forecast"); //pulling this id from HTML, will use Vanilla JS
-  let forecast = response.data.list[1];
-  console.log(formatHours(forecast.dt));
-  forecastElement.innerHTML = `
+  forecastElement.innerHTML =
+    forecastElement.innerHTML +
+    `
   <div class="col-2">
               <h3>
                 ${formatHours(forecast.dt * 1000)}
