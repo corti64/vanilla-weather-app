@@ -56,9 +56,29 @@ function displayTemperature(response) {
 
 function displayForecast(response) {
   //console.log(response.data.list[0]); //first logging the response from the API showing forecast data
-  //function to display extended forecast is below, displays forecast data every 3 hours / on the hour, view API documentation here: https://openweathermap.org/forecast5
+  //function to display an extended forecast (e.g., forecast for next chunk of time) is below, displays forecast data every 3 hours/on the hour, review API documentation: https://openweathermap.org/forecast5
   let forecastElement = document.querySelector("#forecast"); //pulling this id from HTML, will use Vanilla JS
   let forecast = response.data.list[0];
+  console.log(formatHours(forecast.dt));
+  forecastElement.innerHTML = `
+  <div class="col-2">
+              <h3>
+                ${formatHours(forecast.dt * 1000)}
+              </h3>
+              <img src="http://openweathermap.org/img/wn/${
+                forecast.weather[0].icon
+              }@2x.png" alt="">
+                <div class="weather-forecast-temperature">
+                  <strong>${Math.round(
+                    forecast.main.temp_max
+                  )}°</strong> ${Math.round(forecast.main.temp_min)}°
+                </div>
+  </div>
+  `;
+
+  forecast = response.data.list[1]; // need to create loop, I want the above code to work 6 times to give me 6 3-hour chunks
+  let forecastElement = document.querySelector("#forecast"); //pulling this id from HTML, will use Vanilla JS
+  let forecast = response.data.list[1];
   console.log(formatHours(forecast.dt));
   forecastElement.innerHTML = `
   <div class="col-2">
