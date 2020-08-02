@@ -77,9 +77,41 @@ function displayForecast(response) {
   `;
 
   forecast = response.data.list[1]; // need to create loop, I want the above code to work 6 times to give me 6 3-hour chunks
-  forecastElement.innerHTML =
-    forecastElement.innerHTML +
-    `
+  forecastElement.innerHTML += `
+  <div class="col-2">
+              <h3>
+                ${formatHours(forecast.dt * 1000)}
+              </h3>
+              <img src="http://openweathermap.org/img/wn/${
+                forecast.weather[0].icon
+              }@2x.png" alt="">
+                <div class="weather-forecast-temperature">
+                  <strong>${Math.round(
+                    forecast.main.temp_max
+                  )}°</strong> ${Math.round(forecast.main.temp_min)}°
+                </div>
+  </div>
+  `;
+
+  forecast = response.data.list[2]; // need to create loop, I want the above code to work 6 times to give me 6 3-hour chunks
+  forecastElement.innerHTML += `
+  <div class="col-2">
+              <h3>
+                ${formatHours(forecast.dt * 1000)}
+              </h3>
+              <img src="http://openweathermap.org/img/wn/${
+                forecast.weather[0].icon
+              }@2x.png" alt="">
+                <div class="weather-forecast-temperature">
+                  <strong>${Math.round(
+                    forecast.main.temp_max
+                  )}°</strong> ${Math.round(forecast.main.temp_min)}°
+                </div>
+  </div>
+  `;
+
+  forecast = response.data.list[3]; // need to create loop, I want the above code to work 6 times to give me 6 3-hour chunks
+  forecastElement.innerHTML += `
   <div class="col-2">
               <h3>
                 ${formatHours(forecast.dt * 1000)}
