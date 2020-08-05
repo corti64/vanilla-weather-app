@@ -55,18 +55,14 @@ function displayTemperature(response) {
 }
 
 function displayForecast(response) {
-  //function to display an extended forecast (e.g., forecast for next chunk of time) is below, displays forecast data every 3 hours/on the hour, review API documentation: https://openweathermap.org/forecast5
-  let forecastElement = document.querySelector("#forecast"); //pulling this id from HTML, will use Vanilla JS
-  forecastElement.innerHTML = null; //updated forecastElement.innerHTML for "for loop" to run without the following bug: If I search for another city, like Tokyo, it's going to add the forecast to another line, so it doesn't actually overwrite the previous forecast
-  let forecast = null; //created new forecast variable for "for loop" to run
-
-  //let forecast = response.data.list[0]; //commented out this line of code to create for loop, can remove this line
-  //console.log(response.data.list[0]); //first logging the response from the API showing forecast data, can remove this line
-  //console.log(formatHours(forecast.dt)); //commented this line out when creating for loop, can remove this line
+  //created function to display extended forecast (e.g., forecast for next 6 3-hour chunks of time) below. Function displays forecast data every 3 hours/on the hour six times, API documentation: https://openweathermap.org/forecast5
+  let forecastElement = document.querySelector("#forecast"); //pulling this id from HTML
+  forecastElement.innerHTML = null; //updated to prevent bug; when user searches for another city,overwrites each value in forecast with whatever the API returns
+  let forecast = null; //updated forecast variable for "for" loop to run without bug
 
   for (let index = 0; index < 6; index++) {
-    //create "for" loop
-    forecast = response.data.list[index]; // updated this line of code to create "for" loop
+    //created "for" loop below
+    forecast = response.data.list[index]; //Using a "for" loop, I injected this HTML 6 times but each time I am overwriting each value by whatever the API is giving me, and I am doing this 6 times.
     forecastElement.innerHTML += `
     <div class="col-2">
               <h3>
