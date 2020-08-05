@@ -55,77 +55,34 @@ function displayTemperature(response) {
 }
 
 function displayForecast(response) {
-  //console.log(response.data.list[0]); //first logging the response from the API showing forecast data
   //function to display an extended forecast (e.g., forecast for next chunk of time) is below, displays forecast data every 3 hours/on the hour, review API documentation: https://openweathermap.org/forecast5
   let forecastElement = document.querySelector("#forecast"); //pulling this id from HTML, will use Vanilla JS
-  let forecast = response.data.list[0];
-  console.log(formatHours(forecast.dt));
-  forecastElement.innerHTML = `
-  <div class="col-2">
-              <h3>
-                ${formatHours(forecast.dt * 1000)}
-              </h3>
-              <img src="http://openweathermap.org/img/wn/${
-                forecast.weather[0].icon
-              }@2x.png" alt="">
-                <div class="weather-forecast-temperature">
-                  <strong>${Math.round(
-                    forecast.main.temp_max
-                  )}°</strong> ${Math.round(forecast.main.temp_min)}°
-                </div>
-  </div>
-  `;
+  forecastElement.innerHTML = null; //updated forecastElement.innerHTML for "for loop" to run without the following bug: If I search for another city, like Tokyo, it's going to add the forecast to another line, so it doesn't actually overwrite the previous forecast
+  let forecast = null; //created new forecast variable for "for loop" to run
 
-  forecast = response.data.list[1]; // need to create loop, I want the above code to work 6 times to give me 6 3-hour chunks
-  forecastElement.innerHTML += `
-  <div class="col-2">
-              <h3>
-                ${formatHours(forecast.dt * 1000)}
-              </h3>
-              <img src="http://openweathermap.org/img/wn/${
-                forecast.weather[0].icon
-              }@2x.png" alt="">
-                <div class="weather-forecast-temperature">
-                  <strong>${Math.round(
-                    forecast.main.temp_max
-                  )}°</strong> ${Math.round(forecast.main.temp_min)}°
-                </div>
-  </div>
-  `;
+  //let forecast = response.data.list[0]; //commented out this line of code to create for loop, can remove this line
+  //console.log(response.data.list[0]); //first logging the response from the API showing forecast data, can remove this line
+  //console.log(formatHours(forecast.dt)); //commented this line out when creating for loop, can remove this line
 
-  forecast = response.data.list[2]; // need to create loop, I want the above code to work 6 times to give me 6 3-hour chunks
-  forecastElement.innerHTML += `
-  <div class="col-2">
+  for (let index = 0; index < 6; index++) {
+    //create "for" loop
+    forecast = response.data.list[index]; // updated this line of code to create "for" loop
+    forecastElement.innerHTML += `
+    <div class="col-2">
               <h3>
                 ${formatHours(forecast.dt * 1000)}
               </h3>
               <img src="http://openweathermap.org/img/wn/${
                 forecast.weather[0].icon
               }@2x.png" alt="">
-                <div class="weather-forecast-temperature">
+              <div class="weather-forecast-temperature">
                   <strong>${Math.round(
                     forecast.main.temp_max
                   )}°</strong> ${Math.round(forecast.main.temp_min)}°
                 </div>
-  </div>
+    </div>
   `;
-
-  forecast = response.data.list[3]; // need to create loop, I want the above code to work 6 times to give me 6 3-hour chunks
-  forecastElement.innerHTML += `
-  <div class="col-2">
-              <h3>
-                ${formatHours(forecast.dt * 1000)}
-              </h3>
-              <img src="http://openweathermap.org/img/wn/${
-                forecast.weather[0].icon
-              }@2x.png" alt="">
-                <div class="weather-forecast-temperature">
-                  <strong>${Math.round(
-                    forecast.main.temp_max
-                  )}°</strong> ${Math.round(forecast.main.temp_min)}°
-                </div>
-  </div>
-  `;
+  }
 }
 
 function search(city) {
